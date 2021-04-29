@@ -22,6 +22,7 @@ describe('App', () => {
     });
 
     test('adds controller xD', () => {
+
         // const mockedExpress = mocked(express, true)
         // const instance = express();
         // const mockedExpressInstance = mocked(instance, true);
@@ -35,5 +36,9 @@ describe('App', () => {
         // const app = new App('database_urlxD', 5555);
         // const controller = new ControllerStub();
         // expect(app.addController(controller)).not.toThrow();
+//         const app = new App('database_urlxD', 5555);
+//         const controller = new ControllerStub();
+//         expect(app.addController(controller)).not.toThrow();
+
     })
 });
