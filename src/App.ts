@@ -16,4 +16,8 @@ export class App {
     public addController(controller: Controller, path: string = '/'): void {
         this.express.use(path, controller.getRouter());
     }
+
+    public get(){
+        return this.express;
+    }
 }
