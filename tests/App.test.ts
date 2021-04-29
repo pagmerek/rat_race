@@ -23,6 +23,6 @@ describe('App', () => {
     test('adds controller xD', () => {
         const app = new App('database_urlxD', 5555);
         const controller = new ControllerStub();
-        app.addController(controller);
+        expect(app.addController(controller)).not.toThrow();
     })
 });
