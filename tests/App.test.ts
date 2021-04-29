@@ -24,5 +24,5 @@ describe('App', () => {
         const app = new App('database_urlxD', 5555);
         const controller = new ControllerStub();
         expect(app.addController(controller)).not.toThrow();
-    })
+    });
 });
