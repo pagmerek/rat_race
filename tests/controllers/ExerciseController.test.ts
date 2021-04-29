@@ -15,10 +15,10 @@ describe('ExerciseController', () => {
     })
 
     describe('create', () => {
-        const request = { params: { roomName: 'test_room' } } as unknown as Request;
+        const request = { params: { exerciseName: 'test_exercise' } } as unknown as Request;
         test('creates new exercise', () => {
             ExerciseController.create(request, response);
-            expect(mockedExercise.create).toHaveBeenCalledWith({ roomName: 'test_room'});
+            expect(mockedExercise.create).toHaveBeenCalledWith({ exerciseName: 'test_exercise'});
         });
     
         test('renders new exercise template', () => {
