@@ -5,6 +5,7 @@ import { App } from '../src/App';
 import { ControllerStub } from './stubs/ControllerStub';
 
 jest.mock('sequelize')
+jest.mock('express')
 
 describe('App', () => {
 
@@ -21,8 +22,23 @@ describe('App', () => {
     });
 
     test('adds controller xD', () => {
-        const app = new App('database_urlxD', 5555);
-        const controller = new ControllerStub();
-        expect(app.addController(controller)).not.toThrow();
+
+        // const mockedExpress = mocked(express, true)
+        // const instance = express();
+        // const mockedExpressInstance = mocked(instance, true);
+        // mockedExpress.mockReturnValue(instance);
+
+        // const app = new App('database_urlxD', 5555);
+        // const controller = new ControllerStub();
+        // app.addController(controller);
+
+        // expect(mockedExpressInstance.use).toHaveBeenCalledWith(controller);
+        // const app = new App('database_urlxD', 5555);
+        // const controller = new ControllerStub();
+        // expect(app.addController(controller)).not.toThrow();
+//         const app = new App('database_urlxD', 5555);
+//         const controller = new ControllerStub();
+//         expect(app.addController(controller)).not.toThrow();
+
     })
 });
