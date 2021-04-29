@@ -17,7 +17,7 @@ describe("SpreadsheetController",() => {
     });
     
     describe('create', () => {
-        const mockRequest = {params: {name: "test"}} as unknown as Request;
+        const mockRequest = {params: {name: "test", roomId: 111}} as unknown as Request;
         test('render new spreadsheet template', () => {
             SpreadsheetController.create(mockRequest, mockResponse);
             expect(mockResponse.render).toHaveBeenCalledWith('spreadsheet', expect.any(Object));
@@ -25,7 +25,7 @@ describe("SpreadsheetController",() => {
         
         test('create spreadsheet', () => {
             SpreadsheetController.create(mockRequest, mockResponse);
-            expect(mockedSpreadsheet.create).toHaveBeenCalledWith({name: "test"});
+            expect(mockedSpreadsheet.create).toHaveBeenCalledWith({name: "test", roomId: 111});
         });
     });
 
@@ -38,10 +38,10 @@ describe("SpreadsheetController",() => {
     });
 
     describe('list',() =>{
-        const mockRequest = {params: {id: 123} } as unknown as Request;
+        const mockRequest = {params: {roomId: 123} } as unknown as Request;
         test('queries for all spreadsheets', () => {
             SpreadsheetController.list(mockRequest,mockResponse);
-            expect(mockedSpreadsheet.findAll).toHaveBeenCalledWith({where: {id: 123}});
+            expect(mockedSpreadsheet.findAll).toHaveBeenCalledWith({where: {roomId: 123}});
         });
         test('render spreadsheet template', () => {
             SpreadsheetController.create(mockRequest, mockResponse);
