@@ -27,5 +27,10 @@
     "transformIgnorePatterns": [
       "node_modules/(?!variables/.*)"
     ]
+  },
+  "dependencies": {
+    "jade": "^1.11.0",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.3"
   }
 }

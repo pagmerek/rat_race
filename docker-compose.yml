@@ -1,0 +1,30 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: example
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+#   simple_api:
+#     build: ./app
+#     ports:
+#       - 8081:8081
+#     depends_on:
+#       - db
+#     restart: on-failure
+#     links:
+#       - db
+volumes:
+  db-data:

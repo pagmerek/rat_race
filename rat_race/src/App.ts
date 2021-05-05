@@ -11,6 +11,7 @@ export class App {
         this.database = new Sequelize(databaseUrl);
         this.express = express();
         this.port = port;
+        this.express.set('view engine', 'jade')
     }
 
     public addController(controller: Controller, path: string = '/'): void {
