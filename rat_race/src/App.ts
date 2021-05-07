@@ -1,24 +1,35 @@
 import { Sequelize } from "sequelize";
 import express, { Application } from 'express';
 import { Controller } from "./interfaces/Controller";
+import bodyParser from "body-parser";
 
 export class App {
     private database: Sequelize;
     private express: Application;
     private port: number;
 
-    constructor(databaseUrl: string, port: number) {
-        this.database = new Sequelize(databaseUrl);
+    constructor(sequelize: Sequelize, port: number) {
+        this.database = sequelize;
+        this.database.sync();
         this.express = express();
         this.port = port;
-        this.express.set('view engine', 'jade')
+        this.express.set('view engine', 'jade');
+        this.express.set('views', `${__dirname}/../views`);
+        this.express.use(bodyParser.urlencoded({ extended: false }))
+        this.express.use(express.static(`${__dirname}/../public`));
     }
 
-    public addController(controller: Controller, path: string = '/'): void {
-        this.express.use(path, controller.getRouter());
+    public addController(controller: Controller, path?: string): void {
+        if ( path !== undefined ){
+            this.express.use(path, controller.getRouter());
+        } else {
+            this.express.use(controller.getRouter());
+        }
     }
 
-    public get(){
-        return this.express;
+    public listen(){
+        return this.express.listen(this.port, () => {
+            console.log(`App is listening on ${this.port}...`);
+        });
     }
 }
