@@ -3,11 +3,10 @@ import { Controller } from '../interfaces/Controller'
 import Spreadsheet from '../../src/models/Spreadsheet';
 
 export class SpreadsheetController implements Controller{
-    private route : string = '/room';
     private router: Router = Router();
 
     public static create(req: Request, res: Response): void{
-        Room.create();
+        // Room.create();
         const rooms = {};
         res.render('rooms', rooms);
     }
