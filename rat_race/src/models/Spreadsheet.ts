@@ -3,7 +3,7 @@ import sequelize from "../sequelize";
 import Exercise from "./Exercise";
 
 interface SpreadsheetAttributes {
-    id: number;
+    id?: number;
     roomId: number;
     name: string;
 }
@@ -12,12 +12,12 @@ interface SpreadsheetCreationAttributes extends Optional<SpreadsheetAttributes, 
 
 export default class Spreadsheet extends Model<SpreadsheetAttributes>
     implements SpreadsheetAttributes {
-    public id!: number;
+    public id?: number;
     public roomId!: number;
     public name!: string;
 
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
+    public readonly createdAt?: Date;
+    public readonly updatedAt?: Date;
 }
 
 

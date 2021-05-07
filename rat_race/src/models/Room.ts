@@ -45,7 +45,7 @@ Room.init(
 Room.hasMany(Spreadsheet, {
   sourceKey: "id",
   foreignKey: "roomId",
-  as: "spreadsheets", // this determines the name in `associations`!
+  as: "spreadsheets", 
 });
 
 export default Room;
