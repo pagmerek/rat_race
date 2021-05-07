@@ -1,0 +1,13 @@
+extends ./app.jade
+  
+block content
+  div(class='row mt-5 justify-content-start')
+    div(class='col-auto')
+      h3 Room #{name} created!
+  div(class='row mt-3 justify-content-start')
+    div(class='col-auto')
+      h4 You can access it using
+  div(class='row mt-2 justify-content-start')
+    div(class='col-auto border border-dark rounded-2 border-1 p-2')
+      a(href='#{roomUrl}') #{roomUrl}
+    
