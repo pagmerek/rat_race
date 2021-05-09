@@ -1,0 +1,24 @@
+extends ./app.jade
+
+block sidebar
+  .d-flex.flex-column.p-3.bg-light(style='width: 280px; height: 100vh')
+    a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href='/')
+    h1 Rat race
+    hr
+    h6 #{roomName}
+    hr
+    ul.nav.nav-pills.flex-column.mb-auto
+      each spreadsheet in spreadsheetList
+        li(class="#{path[1] == spreadsheet.id ? 'nav-item' : ''}")
+          a(class = "nav-link #{path[1] == spreadsheet.id ? 'active' : 'link-dark'}" href='http://localhost:5000/room/#{path[0]}/spreadsheet/#{spreadsheet.id}' aria-current='page')
+            svg.bi.me-2(width='16' height='16')
+              use(xlink:href='#home')
+            |           #{spreadsheet.name}
+    hr
+    form.form-inline(action='http://localhost:5000/room/#{path[0]}/spreadsheet' method='post')
+      input.form-control(id='Spreadsheet name' type='text' value='' name='name')
+      button.btn.btn-outline-primary(type='submit')
+        svg.bi.bi-plus(xmlns='http://www.w3.org/2000/svg' width='16' height='32' fill='currentColor' viewBox='0 0 16 16')
+          path(d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z')
+    
+
