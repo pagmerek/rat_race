@@ -20,7 +20,7 @@ export class SpreadsheetController implements Controller {
             if (currentRoom == null) throw new Error('Room with given roomId does not exist');
             await Spreadsheet.create({ roomId: Number(roomId), name: req.body.name });
             const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
-            res.render('room', { path: [roomId], roomName: currentRoom.name, spreadsheetList: spreadsheetList })
+            res.render('room', { url:`http://localhost:${PORT}/room/${currentRoom.id}`, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
         } catch (e) {
             console.error(e.message);
             res.render('error');
@@ -32,7 +32,7 @@ export class SpreadsheetController implements Controller {
             const currentRoom = await Room.findByPk(roomId);
             if (currentRoom == null) throw new Error('Room with given roomId does not exist');
             const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
-            res.render('room', { path: [roomId, spreadsheetId], roomName: currentRoom.name, spreadsheetList: spreadsheetList })
+            res.render('room', {url: `http://localhost:${PORT}/room/${currentRoom.id}`, spreadsheetId: spreadsheetId, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
         } catch (e) {
             console.error(e.message);
             res.render('error');
@@ -45,7 +45,7 @@ export class SpreadsheetController implements Controller {
             const currentRoom = await Room.findByPk(roomId);
             if (currentRoom == null) throw new Error('Room with given roomId does not exist');
             const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
-            res.render('room', { path: [roomId], roomName: currentRoom.name, spreadsheetList: spreadsheetList })
+            res.render('room', { url: `http://localhost:${PORT}/room/${currentRoom.id}`, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
         } catch (e) {
             console.error(e.message);
             res.render('error');

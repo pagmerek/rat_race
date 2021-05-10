@@ -7,15 +7,16 @@ block sidebar
      
     h6 #{roomName}
     hr
-    ul.nav.nav-pills.flex-column.mb-auto
-      each spreadsheet in spreadsheetList
-        li(class="#{path[1] == spreadsheet.id ? 'nav-item' : ''}")
-          a(class = "nav-link #{path[1] == spreadsheet.id ? 'active' : 'link-dark'}" href='http://localhost:5000/room/#{path[0]}/spreadsheet/#{spreadsheet.id}' aria-current='page')
-            svg.bi.me-2(width='16' height='16')
-              use(xlink:href='#home')
-            |           #{spreadsheet.name}
+    .overflow-auto
+      ul.nav.nav-pills.flex-column.mb-auto
+        each spreadsheet in spreadsheetList
+          li(class="#{spreadsheetId == spreadsheet.id ? 'nav-item' : ''}")
+            a(class = "nav-link #{spreadsheetId == spreadsheet.id ? 'active' : 'link-dark'}" href='#{url}/spreadsheet/#{spreadsheet.id}' aria-current='page')
+              svg.bi.me-2(width='16' height='16')
+                use(xlink:href='#home')
+              |           #{spreadsheet.name}
     hr
-    form(action='http://localhost:5000/room/#{path[0]}/spreadsheet' method='post')
+    form(action='#{url}/spreadsheet' method='post')
         .input-group.mb-3
           input.form-control(id='Spreadsheet name' type='text' value='' name='name' aria-label="Spreadsheet name" aria-describedby="button-addon2")
           .input-group-append
