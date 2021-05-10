@@ -4,7 +4,7 @@ block sidebar
   .d-flex.flex-column.p-3.bg-light(style='width: 280px; height: 100vh')
     a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href='/')
     h1 Rat race
-    hr
+     
     h6 #{roomName}
     hr
     ul.nav.nav-pills.flex-column.mb-auto
@@ -15,10 +15,12 @@ block sidebar
               use(xlink:href='#home')
             |           #{spreadsheet.name}
     hr
-    form.form-inline(action='http://localhost:5000/room/#{path[0]}/spreadsheet' method='post')
-      input.form-control(id='Spreadsheet name' type='text' value='' name='name')
-      button.btn.btn-outline-primary(type='submit')
-        svg.bi.bi-plus(xmlns='http://www.w3.org/2000/svg' width='16' height='32' fill='currentColor' viewBox='0 0 16 16')
-          path(d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z')
-    
+    form(action='http://localhost:5000/room/#{path[0]}/spreadsheet' method='post')
+        .input-group.mb-3
+          input.form-control(id='Spreadsheet name' type='text' value='' name='name' aria-label="Spreadsheet name" aria-describedby="button-addon2")
+          .input-group-append
+            button.btn.btn-outline-primary(type='submit' id='button-addon2')
+              svg.bi.bi-plus(xmlns='http://www.w3.org/2000/svg' width='16' height='32' fill='currentColor' viewBox='0 0 16 16')
+                path(d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z')
+          
 
