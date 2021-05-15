@@ -17,7 +17,7 @@ export class SpreadsheetController implements Controller {
         try {
             const { roomId } = req.params;
             const currentRoom = await Room.findByPk(roomId);
-            if (currentRoom == null) throw new Error('Room with given roomId does not exist');
+            if (currentRoom === null) throw new Error('Room with given roomId does not exist');
             await Spreadsheet.create({ roomId: parseInt(roomId), name: req.body.name });
             const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
             res.render('room', { url:`http://localhost:${PORT}/room/${currentRoom.id}`, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
@@ -30,7 +30,7 @@ export class SpreadsheetController implements Controller {
         try {
             const { roomId, spreadsheetId } = req.params;
             const currentRoom = await Room.findByPk(roomId);
-            if (currentRoom == null) throw new Error('Room with given roomId does not exist');
+            if (currentRoom === null) throw new Error('Room with given roomId does not exist');
             const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
             res.render('room', {url: `http://localhost:${PORT}/room/${currentRoom.id}`,roomId: roomId, spreadsheetId: spreadsheetId, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
         } catch (e) {
@@ -43,7 +43,7 @@ export class SpreadsheetController implements Controller {
         try {
             const { roomId } = req.params;
             const currentRoom = await Room.findByPk(roomId);
-            if (currentRoom == null) throw new Error('Room with given roomId does not exist');
+            if (currentRoom === null) throw new Error('Room with given roomId does not exist');
             const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
             res.render('room', { url: `http://localhost:${PORT}/room/${currentRoom.id}`,roomId: roomId, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
         } catch (e) {
