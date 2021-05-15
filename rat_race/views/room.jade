@@ -11,7 +11,7 @@ block sidebar
       ul.nav.nav-pills.flex-column.mb-auto
         each spreadsheet in spreadsheetList
           li(class="#{spreadsheetId == spreadsheet.id ? 'nav-item' : ''}")
-            a(class = "nav-link #{spreadsheetId == spreadsheet.id ? 'active' : 'link-dark'}" href='#{url}/spreadsheet/#{spreadsheet.id}' aria-current='page')
+            a(class = "nav-link #{spreadsheetId == spreadsheet.id ? 'active' : 'link-dark'}" href='/room/#{roomId}/spreadsheet/#{spreadsheet.id}' aria-current='page')
               svg.bi.me-2(width='16' height='16')
                 use(xlink:href='#home')
               |           #{spreadsheet.name}

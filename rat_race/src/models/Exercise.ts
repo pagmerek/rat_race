@@ -6,9 +6,10 @@ import Spreadsheet from "./Spreadsheet";
 import User from "./User"
 
 interface ExerciseAttributes {
-    id?: number;
+    id: number;
     label: string;
-    assignedUserId: number | null;
+    assignedUserFirstName?: string;
+    assignedUserLastName?: string;
     spreadsheetId: number;
 }
 
@@ -16,20 +17,21 @@ interface ExerciseCreationAttributes extends Optional<ExerciseAttributes, "id"> 
 
 class Exercise extends Model<ExerciseAttributes>
     implements ExerciseAttributes {
-    public id?: number;
+    public id!: number;
     public label!: string;
-    public assignedUserId!: number | null;
+    public assignedUserFirstName?: string;
+    public assignedUserLastName?: string;
     public spreadsheetId!: number;
 
-    public readonly createdAt?: Date;
-    public readonly updatedAt?: Date;
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
 
-    public async assign(firstName: string, lastName: string) {
-        const exercise = await Exercise.findByPk(this.id);
-        const targetUser = await User.findOne({ where: { firstName: firstName, lastName: lastName } });
-        //TODO: implement this xD
+     public assign(firstName: string, lastName: string): void {
+        
     }
+
 }
+
 Exercise.init({
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -40,8 +42,12 @@ Exercise.init({
         type: new DataTypes.STRING(3),
         allowNull: false,
     },
-    assignedUserId: {
-        type: DataTypes.INTEGER.UNSIGNED,
+    assignedUserFirstName: {
+        type: new DataTypes.STRING(32),
+        allowNull: true,
+    },
+    assignedUserLastName: {
+        type: new DataTypes.STRING(32),
         allowNull: true,
     },
     spreadsheetId: {

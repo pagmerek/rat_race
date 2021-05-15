@@ -5,12 +5,12 @@ import { PORT } from '..';
 import Room from '../models/Room';
 
 export class SpreadsheetController implements Controller {
-    private router: Router = Router();
+    private router: Router = Router({mergeParams: true});
 
     constructor() {
-        this.router.get('/:roomId', SpreadsheetController.list);
-        this.router.post('/:roomId/spreadsheet', SpreadsheetController.create);
-        this.router.get('/:roomId/spreadsheet/:spreadsheetId', SpreadsheetController.get)
+        this.router.get('/', SpreadsheetController.list);
+        this.router.post('/spreadsheet', SpreadsheetController.create);
+        this.router.get('/spreadsheet/:spreadsheetId', SpreadsheetController.get)
 
     }
     public static async create(req: Request, res: Response): Promise<void> {
@@ -18,7 +18,7 @@ export class SpreadsheetController implements Controller {
             const { roomId } = req.params;
             const currentRoom = await Room.findByPk(roomId);
             if (currentRoom == null) throw new Error('Room with given roomId does not exist');
-            await Spreadsheet.create({ roomId: Number(roomId), name: req.body.name });
+            await Spreadsheet.create({ roomId: parseInt(roomId), name: req.body.name });
             const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
             res.render('room', { url:`http://localhost:${PORT}/room/${currentRoom.id}`, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
         } catch (e) {
@@ -32,7 +32,7 @@ export class SpreadsheetController implements Controller {
             const currentRoom = await Room.findByPk(roomId);
             if (currentRoom == null) throw new Error('Room with given roomId does not exist');
             const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
-            res.render('room', {url: `http://localhost:${PORT}/room/${currentRoom.id}`, spreadsheetId: spreadsheetId, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
+            res.render('room', {url: `http://localhost:${PORT}/room/${currentRoom.id}`,roomId: roomId, spreadsheetId: spreadsheetId, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
         } catch (e) {
             console.error(e.message);
             res.render('error');
@@ -45,7 +45,7 @@ export class SpreadsheetController implements Controller {
             const currentRoom = await Room.findByPk(roomId);
             if (currentRoom == null) throw new Error('Room with given roomId does not exist');
             const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
-            res.render('room', { url: `http://localhost:${PORT}/room/${currentRoom.id}`, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
+            res.render('room', { url: `http://localhost:${PORT}/room/${currentRoom.id}`,roomId: roomId, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
         } catch (e) {
             console.error(e.message);
             res.render('error');

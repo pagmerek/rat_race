@@ -9,5 +9,5 @@ const app = new App(sequelize, PORT);
 
 app.addController(new HomeController());
 app.addController(new RoomController(), '/room');
-app.addController(new SpreadsheetController(), '/room');
+app.addController(new SpreadsheetController(), '/room/:roomId');
 app.listen();
