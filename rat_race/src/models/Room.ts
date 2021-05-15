@@ -4,7 +4,7 @@ import {
     Optional,
   } from "sequelize";
 import sequelize from "../sequelize";
-
+import Spreadsheet from "./Spreadsheet";
 
 
 interface RoomAttributes {
@@ -42,12 +42,10 @@ Room.init(
   }
 );
 
-// TODO
-// Room.hasMany(Spreadsheet, {
-//   sourceKey: "",
-//   foreignKey: "",
-//   as: "projects", // this determines the name in `associations`!
-// });
-// TODO add associations field in model
+Room.hasMany(Spreadsheet, {
+  sourceKey: "id",
+  foreignKey: "roomId",
+  as: "spreadsheets", 
+});
 
 export default Room;

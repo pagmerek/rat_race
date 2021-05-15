@@ -1,23 +1,57 @@
 import { Router, Response, Request } from 'express';
 import { Controller } from '../interfaces/Controller'
-import Spreadsheet from '../../src/models/Spreadsheet';
+import Spreadsheet from '../models/Spreadsheet';
+import { PORT } from '..';
+import Room from '../models/Room';
 
-export class SpreadsheetController implements Controller{
-    private router: Router = Router();
+export class SpreadsheetController implements Controller {
+    private router: Router = Router({mergeParams: true});
 
-    public static create(req: Request, res: Response): void{
-        // Room.create();
-        const rooms = {};
-        res.render('rooms', rooms);
-    }
-    public static get(req: Request, res: Response): void{
-
-    }
-
-    public static list(req: Request, res: Response): void{
+    constructor() {
+        this.router.get('/', SpreadsheetController.list);
+        this.router.post('/spreadsheet', SpreadsheetController.create);
+        this.router.get('/spreadsheet/:spreadsheetId', SpreadsheetController.get)
 
     }
-    public getRouter(): Router{
-        return Router();
+    public static async create(req: Request, res: Response): Promise<void> {
+        try {
+            const { roomId } = req.params;
+            const currentRoom = await Room.findByPk(roomId);
+            if (currentRoom === null) throw new Error('Room with given roomId does not exist');
+            await Spreadsheet.create({ roomId: parseInt(roomId), name: req.body.name });
+            const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
+            res.render('room', { url:`http://localhost:${PORT}/room/${currentRoom.id}`, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
+        } catch (e) {
+            console.error(e.message);
+            res.render('error');
+        }
+    }
+    public static async get(req: Request, res: Response): Promise<void> {
+        try {
+            const { roomId, spreadsheetId } = req.params;
+            const currentRoom = await Room.findByPk(roomId);
+            if (currentRoom === null) throw new Error('Room with given roomId does not exist');
+            const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
+            res.render('room', {url: `http://localhost:${PORT}/room/${currentRoom.id}`,roomId: roomId, spreadsheetId: spreadsheetId, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
+        } catch (e) {
+            console.error(e.message);
+            res.render('error');
+        }
+    }
+
+    public static async list(req: Request, res: Response): Promise<void> {
+        try {
+            const { roomId } = req.params;
+            const currentRoom = await Room.findByPk(roomId);
+            if (currentRoom === null) throw new Error('Room with given roomId does not exist');
+            const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
+            res.render('room', { url: `http://localhost:${PORT}/room/${currentRoom.id}`,roomId: roomId, roomName: currentRoom.name, spreadsheetList: spreadsheetList })
+        } catch (e) {
+            console.error(e.message);
+            res.render('error');
+        }
+    }
+    public getRouter(): Router {
+        return this.router;
     }
 }

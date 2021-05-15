@@ -1,7 +1,8 @@
-import { Model } from "sequelize";
-  
-export default class User extends Model{
-    public static getPoints(firstName: string, lastName: string): number {
+
+class User{
+    public getPoints(roomId: number): number {
+        //TODO: implement this xD
         return 122222;
     }
 }
+export default User;
