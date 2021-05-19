@@ -4,15 +4,14 @@ block sidebar
     a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href='/')
     h1 Rat race
 block content
-  div(class='row')
-    div(class="col-auto justify-content-center mt-5")
-      h2 Your marks are in your hands!
-  form(action='/room', method='post', class='row g3 justify-content-center gap-3 mt-3')
-    div(class="col-auto ")
-      div(data-role='fieldcontain')
-        fieldset(data-role='controlgroup')
-          label(for='Room name')
-            input(id='Room name',type='text',value='',name='name', class="form-control")
-    div(class="col-auto")
-      div(data-role='fieldcontain')   
-        input(type='submit',value='Create room', class='btn btn-primary mb-3')
+  .p-5.rounded-lg.m-3
+      h1(style='text-align: center;') Your marks are in your hands! 
+      form(action='/room', method='post', class='row g3 justify-content-center gap-3 mt-3')
+        div(class="col-auto ")
+          div(data-role='fieldcontain')
+            fieldset(data-role='controlgroup')
+              label(for='Room name')
+                input(id='Room name',type='text',value='',name='name', class="form-control")
+        div(class="col-auto")
+          div(data-role='fieldcontain')   
+            input(type='submit',value='Create room', class='btn btn-primary mb-3')

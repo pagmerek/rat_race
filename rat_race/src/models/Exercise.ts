@@ -6,7 +6,7 @@ import Spreadsheet from "./Spreadsheet";
 import User from "./User"
 
 interface ExerciseAttributes {
-    id: number;
+    id?: number;
     label: string;
     assignedUserFirstName?: string;
     assignedUserLastName?: string;
@@ -17,7 +17,7 @@ interface ExerciseCreationAttributes extends Optional<ExerciseAttributes, "id"> 
 
 class Exercise extends Model<ExerciseAttributes>
     implements ExerciseAttributes {
-    public id!: number;
+    public id?: number;
     public label!: string;
     public assignedUserFirstName?: string;
     public assignedUserLastName?: string;
