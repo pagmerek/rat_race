@@ -1,58 +1,59 @@
 extends ./app.jade
-
 block sidebar
-  .d-flex.flex-column.p-3.bg-light(style='width: 280px; height: 100vh; float:left')
-    a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href='/')
-    h1 Rat race
-     
-    h6 #{roomName}
-    hr
-    .overflow-auto
-      ul.nav.nav-pills.flex-column.mb-auto
-          each spreadsheet in spreadsheetList
-            li(class="#{spreadsheetId == spreadsheet.id ? 'nav-item' : ''}")
-              a(class = "nav-link #{spreadsheetId == spreadsheet.id ? 'active' : 'link-dark'}" href='/room/#{roomId}/spreadsheet/#{spreadsheet.id}' aria-current='page')
-                svg.bi.me-2(width='16' height='16')
-                  use(xlink:href='#home')
-                |           #{spreadsheet.name}
-    .mt-auto
-    hr
-    form(action='#{url}/spreadsheet' method='post', style='bottom:0;')
-          .input-group.mb-3
-            input.form-control(id='Spreadsheet name' type='text' value='' name='name' aria-label="Spreadsheet name" aria-describedby="button-addon2")
-            .input-group-append
-              button.btn.btn-outline-primary(type='submit' id='button-addon2')
-                svg.bi.bi-plus(xmlns='http://www.w3.org/2000/svg' width='16' height='32' fill='currentColor' viewBox='0 0 16 16')
-                  path(d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z')
-            
+      .d-flex.flex-column.p-3.bg-dark(style='height:100%;')
+        a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href='/')
+        h1.text-white  &#128000 Rat race
+        hr.text-white 
+        h6.text-white(style='margin-left: auto; margin-right: auto;') #{roomName}
+        hr.text-white
+        .overflow-auto
+          ul.nav.nav-pills.flex-column.mb-auto
+              each spreadsheet in spreadsheetList
+                li(class="#{spreadsheetId == spreadsheet.id ? 'nav-item' : ''}")
+                  a(class = "nav-link #{spreadsheetId == spreadsheet.id ? 'active' : 'link-dark'}" href='/room/#{roomId}/spreadsheet/#{spreadsheet.id}' aria-current='page').text-white
+                    svg.bi.me-2(width='16' height='16')
+                      use(xlink:href='#home')
+                    |           #{spreadsheet.name}
+        .mt-auto
+        hr
+        form(action='#{url}/spreadsheet' method='post', style='bottom:0;')
+              .input-group.mb-3
+                input.form-control.bg-dark.text-white(id='Spreadsheet name' required type='text' value='' placeholder='Nazwa zestawu' name='name' aria-label="Spreadsheet name" aria-describedby="button-addon2")
+                .input-group-append
+                  button.btn.btn-success(type='submit' id='button-addon2')
+                    svg.bi.bi-plus(xmlns='http://www.w3.org/2000/svg' width='16' height='32' fill='currentColor' viewBox='0 0 16 16')
+                      path(d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z')
+                
 
 block content 
-  if spreadsheetId 
-    .bg-light.p-5.rounded-lg.m-3
-      h1 #{spreadsheetName}
-      hr
-      p.lead(style='text-align: center')
-        | Aby zapisać się do zadania wpisz swoje imię i nazwisko obok jego numeru i kliknij: Zapisz
-      h1(style='text-align: center;') Dodaj zadanie
-        form(action='#{url}/spreadsheet/#{spreadsheetId}/exercise', method='post', class='row g3 justify-content-center gap-3 mt-3')
-          div(class="col-auto ")
-            div(data-role='fieldcontain')
-              fieldset(data-role='controlgroup')
-                label(for='Exercise label')
-                  input(id='Exercise label',type='text',value='',name='label', class="form-control")
-          div(class="col-auto")
-            div(data-role='fieldcontain')   
-              input(type='submit',value='Create exercise', class='btn btn-primary mb-3')
-        hr
-        .overflow-auto
-          .container
-            each exercise in exerciseList         
-              .row 
-                .col 
-                  |  #{exercise.label}
-                .col
-                  a 
-                    | Imie i nazwisko
-                .col
-                  button.btn.btn-outline-primary(type='submit', id='assign_button')
-                    | Zapisz się!
+      if spreadsheetId 
+        .d-flex.flex-column.p-3.bg-light(style='height:100vh;')
+          h1 #{spreadsheetName}
+          hr
+          p.lead(style='text-align: center')
+            | Aby zapisać się do zadania wpisz swoje imię i nazwisko obok jego numeru i kliknij: Zapisz się!
+          p.lead(style='text-align: center')
+            | Możesz również nadpisać czyjeś zadanie jeżeli masz mniej zadań w tym pokoju
+          form(action='#{url}/spreadsheet/#{spreadsheetId}/exercise', method='post', class='row g3 justify-content-center gap-3 mt-3')
+            div(class="col-auto ")
+              div(data-role='fieldcontain')
+                fieldset(data-role='controlgroup')
+                  label(for='Exercise label')
+                    input(id='Exercise label',type='text',value='',name='label',required, class="form-control")
+            div(class="col-auto")
+              div(data-role='fieldcontain')   
+                input(type='submit',value='Dodaj zadanie', class='btn btn-primary mb-3')
+          div(style='margin-right: auto; margin-left: auto; min-width: 800px;overflow-y: auto; overflow-x: hidden')
+                each exercise in exerciseList 
+                  form(action='#{url}/spreadsheet' method='post', style='bottom:0; margin-left: auto; margin-right: auto')        
+                    .row(style='margin-top:2%') 
+                      .col 
+                        |  #{exercise.label}
+                      .col
+                        a 
+                          | Imie i nazwisko                     
+                      .col 
+                          input(id='name',type='text',value='',name='name',placeholder='Imie i nazwisko',required, class="form-control")
+                      .col
+                        button.btn.btn-outline-primary(type='submit', id='assign_button')
+                          | Zapisz się!
