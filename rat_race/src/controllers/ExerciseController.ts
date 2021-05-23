@@ -71,7 +71,7 @@ export class ExerciseController implements Controller {
             const currentExercise = await Exercise.findByPk(exerciseId);
             if (currentExercise === null) throw new Error('Exercise with given id does not exist');
             try {
-              currentExercise.assign(req.body.exerciseForm[0], req.body.exerciseForm[1]);
+            //   currentExercise.assign(req.body.exerciseForm[0], req.body.exerciseForm[1]);
             } catch (e) {
                 //failed message
             }

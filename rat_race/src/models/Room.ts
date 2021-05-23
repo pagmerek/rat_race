@@ -1,10 +1,7 @@
 import {
     Model,
-    DataTypes,
     Optional,
   } from "sequelize";
-import sequelize from "../sequelize";
-import Spreadsheet from "./Spreadsheet";
 
 
 interface RoomAttributes {
@@ -22,30 +19,5 @@ class Room extends Model<RoomAttributes>
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
-
-
-Room.init(
-  {
-    id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        autoIncrement: true,
-        primaryKey: true,
-    },
-    name: {
-      type: new DataTypes.STRING(128),
-      allowNull: false,
-    }
-  },
-  {
-    sequelize,
-    tableName: "rooms",
-  }
-);
-
-Room.hasMany(Spreadsheet, {
-  sourceKey: "id",
-  foreignKey: "roomId",
-  as: "spreadsheets", 
-});
 
 export default Room;

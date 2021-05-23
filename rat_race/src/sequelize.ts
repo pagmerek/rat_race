@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize';
+import { modelInit } from './models/Modelnit';
 
 export const url = process.env.DEV === 'true' ? 'postgres://example:example@localhost:5432/postgres' : 'postgres://example:example@db/postgres';
 
@@ -13,7 +14,7 @@ const testConnection = async () => {
       }
 }
 testConnection();
-
+modelInit(sequelize);
 
 
 export default sequelize;
