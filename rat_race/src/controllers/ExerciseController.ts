@@ -10,7 +10,7 @@ export class ExerciseController implements Controller {
 
     constructor() {
         this.router.get('/', ExerciseController.list);
-        this.router.post('/exercise', ExerciseController.create);
+        this.router.post('/exercise/create', ExerciseController.create);
         this.router.post('/exercise/:exerciseId', ExerciseController.assign);
     }
     public static async create(req: Request, res: Response): Promise<void> {
@@ -21,20 +21,7 @@ export class ExerciseController implements Controller {
             const currentSpreadsheet = await Spreadsheet.findByPk(spreadsheetId);
             if (currentSpreadsheet === null) throw new Error('Spreadsheet with given id does not exist');
             await Exercise.create({ label: req.body.label, spreadsheetId: parseInt(spreadsheetId) });
-            const exerciseList = await Exercise.findAll({ where: { spreadsheetId: spreadsheetId } });
-            const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } })
-
-            res.render('room',
-                {
-                    spreadsheetList: spreadsheetList,
-                    exerciseList: exerciseList,
-                    roomName: currentRoom.name,
-                    roomId: roomId,
-                    spreadsheetId: spreadsheetId,
-                    spreadsheetName: currentSpreadsheet.name,
-                    url: `http://localhost:${PORT}/room/${currentRoom.id}`
-
-                });
+            res.redirect(`/room/${roomId}/spreadsheet/${spreadsheetId}`);
         } catch (e) {
             console.error(e.message);
             res.render('error');
