@@ -1,6 +1,4 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../sequelize";
-import Exercise from "./Exercise";
 
 interface SpreadsheetAttributes {
     id?: number;
@@ -10,7 +8,7 @@ interface SpreadsheetAttributes {
 
 interface SpreadsheetCreationAttributes extends Optional<SpreadsheetAttributes, "id"> { }
 
-export default class Spreadsheet extends Model<SpreadsheetAttributes>
+class Spreadsheet extends Model<SpreadsheetAttributes, SpreadsheetCreationAttributes>
     implements SpreadsheetAttributes {
     public id?: number;
     public roomId!: number;
@@ -21,30 +19,4 @@ export default class Spreadsheet extends Model<SpreadsheetAttributes>
 }
 
 
-Spreadsheet.init(
-    {
-        id: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        roomId: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            allowNull: false,
-        },
-        name: {
-            type: new DataTypes.STRING(128),
-            allowNull: false,
-        }
-    },
-    {
-        sequelize,
-        tableName: "spreadsheets",
-    }
-);
-
-Spreadsheet.hasMany(Exercise, {
-    sourceKey: "id",
-    foreignKey: "spreadsheetId",
-    as: "excercises",
-});
+export default Spreadsheet;
