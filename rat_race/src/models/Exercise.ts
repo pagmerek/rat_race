@@ -35,7 +35,7 @@ class Exercise extends Model<ExerciseAttributes, ExerciseCreationAttributes>
         const assignedUserPoints = await Exercise.count({
             include: {
                 model: Spreadsheet,
-                as: 'Spreadsheets',
+                as: 'Spreadsheet',
                 where: {
                     'roomId': {
                         [Op.eq]: currentSpreadsheet.roomId
@@ -54,7 +54,7 @@ class Exercise extends Model<ExerciseAttributes, ExerciseCreationAttributes>
         const requestedUserPoints = await Exercise.count({
             include: {
                 model: Spreadsheet,
-                as: 'Spreadsheets',
+                as: 'Spreadsheet',
                 where: {
                     'roomId': {
                         [Op.eq]: currentSpreadsheet.roomId
@@ -72,12 +72,12 @@ class Exercise extends Model<ExerciseAttributes, ExerciseCreationAttributes>
         });
         console.log(requestedUserPoints);
         console.log(assignedUserPoints);
-        if (requestedUserPoints > assignedUserPoints) {
+        if (requestedUserPoints < assignedUserPoints) {
             this.assignedUserFirstName = firstName;
             this.assignedUserLastName = lastName;
+            return this;
 
         } else throw new Error('Can\'t reassign an exercise to a user with greater amount of points');
-        return this;
         }
 }
 

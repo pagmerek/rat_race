@@ -28,10 +28,14 @@ block sidebar
 block content 
       if spreadsheetId 
         .d-flex.flex-column.p-5.bg-light(style='height: 100vh')
-          h1 #{spreadsheetName}
+          h1 #{spreadsheetName} <p style='float: right' id="timer"></p> 
           hr
-          h3  <p id="timer"></p>
-          hr
+          if success == "true" 
+                .alert.alert-success(role="alert")
+                  | Pomyślnie zapisano do zadania!
+          else if success == "false"
+                .alert.alert-danger(role="alert")
+                  | Nie udało zapisać do zadania. Masz więcej bądź tyle samo punktów w tym pokoju niż osoba aktualnie zapisana.
           p.lead(style='text-align: center')
             | Aby zapisać się do zadania wpisz swoje imię i nazwisko obok jego numeru i kliknij: Zapisz się!
           p.lead(style='text-align: center')
@@ -46,7 +50,7 @@ block content
               div(data-role='fieldcontain')   
                 input(type='submit',value='Dodaj zadanie', class='btn btn-primary mb-3')
           div(style='margin-right: auto; margin-left: auto; min-width: 800px;overflow-y: auto; overflow-x: hidden')
-                each exercise in exerciseList 
+            each exercise in exerciseList 
                   form(action='#{url}/spreadsheet/#{spreadsheetId}/exercise/#{exercise.id}' method='post', style='bottom:0; margin-left: auto; margin-right: auto').form-row      
                     .row(style='margin-top:2%') 
                       .col 
@@ -68,7 +72,7 @@ block content
   
           script.
             let countDownDate = new Date('#{createdAt}');
-            countDownDate.setDate(countDownDate.getDate() + 1);
+            countDownDate.setDate(countDownDate.getDate()+1);
             let x = setInterval( () => {
               let now = new Date().getTime();
               let distance = countDownDate - now;

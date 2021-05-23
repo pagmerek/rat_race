@@ -34,16 +34,18 @@ export class ExerciseController implements Controller {
 
     public static async list(req: Request, res: Response): Promise<void> {
         try {
+            const success = req.query.success;
             const { roomId, spreadsheetId } = req.params;
             const currentRoom = await Room.findByPk(roomId);
             if (currentRoom === null) throw new Error('Room with given id does not exist')
             const currentSpreadsheet = await Spreadsheet.findByPk(spreadsheetId);
             if (currentSpreadsheet === null) throw new Error('Spreadsheet with given id does not exist');
-            const exerciseList = await Exercise.findAll({ where: { spreadsheetId: spreadsheetId } });
+            const exerciseList = await Exercise.findAll({ where: { spreadsheetId: spreadsheetId }, order: [['id', 'ASC']]});
             const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } })
             const timeCreated = currentSpreadsheet.createdAt; 
             res.render('room',
-                {
+                {   
+                    success: success,
                     createdAt: timeCreated,
                     spreadsheetList: spreadsheetList,
                     exerciseList: exerciseList,
@@ -62,6 +64,7 @@ export class ExerciseController implements Controller {
 
     public static async assign(req: Request, res: Response) {
         try {
+            let success = true;
             const { roomId, spreadsheetId, exerciseId } = req.params;
             console.log(req.body);
             const currentRoom = await Room.findByPk(roomId);
@@ -71,11 +74,11 @@ export class ExerciseController implements Controller {
             const currentExercise = await Exercise.findByPk(exerciseId);
             if (currentExercise === null) throw new Error('Exercise with given id does not exist');
             try {
-            //   currentExercise.assign(req.body.exerciseForm[0], req.body.exerciseForm[1]);
+                (await currentExercise.assign(req.body.exerciseForm[0], req.body.exerciseForm[1])).save();
             } catch (e) {
-                //failed message
+                success=false;
             }
-            res.redirect(`/room/${roomId}/spreadsheet/${spreadsheetId}`)
+            res.redirect(`/room/${roomId}/spreadsheet/${spreadsheetId}/?success=${success}`)
         } catch (e) {
             console.log(e);
             res.render('error');
