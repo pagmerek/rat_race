@@ -1,10 +1,10 @@
 extends ./app.jade
 block sidebar
-  .d-flex.flex-column.p-3(style='width: 280px;')
+  .d-flex.flex-column.p-3(style='width: 280px; height: 100vh')
     a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href='/')
     h1 &#128000 Rat race
 block content
-  .d-flex.flex-column.p-3(style='margin-top: auto; margin-right:auto; margin-left: auto;')
+  .d-flex.flex-column.p-3(style='margin-right:auto; margin-left: auto;')
       h1(style='text-align: center;') Your marks are in your hands! 
       form(action='/room', method='post', class='row g3 justify-content-center gap-3 mt-3')
         div(class="col-auto ")

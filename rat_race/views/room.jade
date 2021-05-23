@@ -16,7 +16,7 @@ block sidebar
                     |           #{spreadsheet.name}
         .mt-auto
         hr
-        form(action='#{url}/spreadsheet' method='post', style='bottom:0;')
+        form(action='#{url}/spreadsheet/create' method='post', style='bottom:0;')
               .input-group.mb-3
                 input.form-control.bg-dark.text-white(id='Spreadsheet name' required type='text' value='' placeholder='Nazwa zestawu' name='name' aria-label="Spreadsheet name" aria-describedby="button-addon2")
                 .input-group-append
@@ -27,16 +27,16 @@ block sidebar
 
 block content 
       if spreadsheetId 
-        .d-flex.flex-column.p-5.bg-light
+        .d-flex.flex-column.p-5.bg-light(style='height: 100vh')
           h1 #{spreadsheetName}
           hr
-          <p id="timer"></p>
+          h3  <p id="timer"></p>
           hr
           p.lead(style='text-align: center')
             | Aby zapisać się do zadania wpisz swoje imię i nazwisko obok jego numeru i kliknij: Zapisz się!
           p.lead(style='text-align: center')
             | Możesz również nadpisać czyjeś zadanie jeżeli masz mniej zadań w tym pokoju
-          form(action='#{url}/spreadsheet/#{spreadsheetId}/exercise', method='post', class='row g3 justify-content-center gap-3 mt-3')
+          form(action='#{url}/spreadsheet/#{spreadsheetId}/exercise/create', method='post', class='row g3 justify-content-center gap-3 mt-3')
             div(class="col-auto ")
               div(data-role='fieldcontain')
                 fieldset(data-role='controlgroup')
@@ -47,13 +47,17 @@ block content
                 input(type='submit',value='Dodaj zadanie', class='btn btn-primary mb-3')
           div(style='margin-right: auto; margin-left: auto; min-width: 800px;overflow-y: auto; overflow-x: hidden')
                 each exercise in exerciseList 
-                  form(action='#{url}/spreadsheet/#{exerciseId}' method='post', style='bottom:0; margin-left: auto; margin-right: auto').form-row      
+                  form(action='#{url}/spreadsheet/#{exerciseId}/create' method='post', style='bottom:0; margin-left: auto; margin-right: auto').form-row      
                     .row(style='margin-top:2%') 
                       .col 
                         |  #{exercise.label}
                       .col
-                        a 
-                          | Imie i nazwisko                     
+                        if exercise.assignedUserFirstName && exercise.assignedUserLastName
+                          p 
+                            | #{exercise.assignedUserFirstName}  #{exercise.assignedUserLastName}
+                        else
+                          p.text-success
+                            |   Wolne :)                 
                       .col
                           input(id='name', disabled = 'true', type='text',value='',name='exerciseForm',placeholder='Imię',required, class="form-control")
                       .col
@@ -79,7 +83,6 @@ block content
                 document.getElementById('timer').innerHTML = "Otwarty!";
                 let formList = document.getElementsByName('exerciseForm');
                 formList.forEach((item, index) => {
-                  console.log(item);
                   item.disabled = false;
                 });
               }
