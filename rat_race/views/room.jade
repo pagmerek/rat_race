@@ -1,6 +1,6 @@
 extends ./app.jade
 block sidebar
-      .d-flex.flex-column.p-3.bg-dark(style='height:100%;')
+      .d-flex.flex-column.p-3.bg-dark(style='height:100vh;')
         a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href='/')
         h1.text-white  &#128000 Rat race
         hr.text-white 
@@ -27,8 +27,10 @@ block sidebar
 
 block content 
       if spreadsheetId 
-        .d-flex.flex-column.p-3.bg-light(style='height:100vh;')
+        .d-flex.flex-column.p-5.bg-light
           h1 #{spreadsheetName}
+          hr
+          <p id="timer"></p>
           hr
           p.lead(style='text-align: center')
             | Aby zapisać się do zadania wpisz swoje imię i nazwisko obok jego numeru i kliknij: Zapisz się!
@@ -45,15 +47,40 @@ block content
                 input(type='submit',value='Dodaj zadanie', class='btn btn-primary mb-3')
           div(style='margin-right: auto; margin-left: auto; min-width: 800px;overflow-y: auto; overflow-x: hidden')
                 each exercise in exerciseList 
-                  form(action='#{url}/spreadsheet' method='post', style='bottom:0; margin-left: auto; margin-right: auto')        
+                  form(action='#{url}/spreadsheet/#{exerciseId}' method='post', style='bottom:0; margin-left: auto; margin-right: auto').form-row      
                     .row(style='margin-top:2%') 
                       .col 
                         |  #{exercise.label}
                       .col
                         a 
                           | Imie i nazwisko                     
-                      .col 
-                          input(id='name',type='text',value='',name='name',placeholder='Imie i nazwisko',required, class="form-control")
                       .col
-                        button.btn.btn-outline-primary(type='submit', id='assign_button')
-                          | Zapisz się!
+                          input(id='name', disabled = 'true', type='text',value='',name='exerciseForm',placeholder='Imię',required, class="form-control")
+                      .col
+                          input(id='surname', disabled = 'true', type='text',value='',name='exerciseForm',placeholder='Nazwisko',required, class="form-control")
+                      .col
+                          button.btn.btn-outline-primary(type='submit',disabled = 'true', id='assign_button', name='exerciseForm')
+                            | Zapisz się!
+  
+          script.
+            let countDownDate = new Date('#{createdAt}');
+            countDownDate.setDate(countDownDate.getDate() + 1);
+            let x = setInterval( () => {
+              let now = new Date().getTime();
+              let distance = countDownDate - now;
+              let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+              document.getElementById("timer").innerHTML = "Arkusz otworzy się za " + hours +"h " + minutes +"m " + seconds + "s ";
+
+              if(distance < 0) {
+                clearInterval(x);
+                document.getElementById('timer').innerHTML = "Otwarty!";
+                let formList = document.getElementsByName('exerciseForm');
+                formList.forEach((item, index) => {
+                  console.log(item);
+                  item.disabled = false;
+                });
+              }
+            });

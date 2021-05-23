@@ -6,35 +6,36 @@ import Spreadsheet from '../models/Spreadsheet';
 import { PORT } from '..';
 
 export class ExerciseController implements Controller {
-    private router: Router = Router({mergeParams: true})
-    
-    constructor(){
+    private router: Router = Router({ mergeParams: true })
+
+    constructor() {
         this.router.get('/', ExerciseController.list);
         this.router.post('/exercise', ExerciseController.create);
+        this.router.post('/exercise/:exerciseId', ExerciseController.assign);
     }
     public static async create(req: Request, res: Response): Promise<void> {
-        try{
-            const {roomId, spreadsheetId} = req.params;
+        try {
+            const { roomId, spreadsheetId } = req.params;
             const currentRoom = await Room.findByPk(roomId);
-            if(currentRoom===null) throw new Error('Room with given id does not exist')
+            if (currentRoom === null) throw new Error('Room with given id does not exist')
             const currentSpreadsheet = await Spreadsheet.findByPk(spreadsheetId);
-            if(currentSpreadsheet===null) throw new Error('Spreadsheet with given id does not exist');        
-            await Exercise.create({label: req.body.label, spreadsheetId: parseInt(spreadsheetId)});
-            const exerciseList = await Exercise.findAll({where: {spreadsheetId: spreadsheetId}});
-            const spreadsheetList = await Spreadsheet.findAll({where:{roomId: roomId}})
-            
-            res.render('room',
-            {
-                spreadsheetList:spreadsheetList,
-                exerciseList: exerciseList,
-                roomName:currentRoom.name,
-                roomId: roomId,
-                spreadsheetId: spreadsheetId,
-                spreadsheetName: currentSpreadsheet.name,
-                url: `http://localhost:${PORT}/room/${currentRoom.id}`
+            if (currentSpreadsheet === null) throw new Error('Spreadsheet with given id does not exist');
+            await Exercise.create({ label: req.body.label, spreadsheetId: parseInt(spreadsheetId) });
+            const exerciseList = await Exercise.findAll({ where: { spreadsheetId: spreadsheetId } });
+            const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } })
 
-            });
-        }catch(e) {
+            res.render('room',
+                {
+                    spreadsheetList: spreadsheetList,
+                    exerciseList: exerciseList,
+                    roomName: currentRoom.name,
+                    roomId: roomId,
+                    spreadsheetId: spreadsheetId,
+                    spreadsheetName: currentSpreadsheet.name,
+                    url: `http://localhost:${PORT}/room/${currentRoom.id}`
+
+                });
+        } catch (e) {
             console.error(e.message);
             res.render('error');
         }
@@ -45,34 +46,51 @@ export class ExerciseController implements Controller {
     }
 
     public static async list(req: Request, res: Response): Promise<void> {
-        try{
-            const {roomId, spreadsheetId} = req.params;
+        try {
+            const { roomId, spreadsheetId } = req.params;
             const currentRoom = await Room.findByPk(roomId);
-            if(currentRoom===null) throw new Error('Room with given id does not exist')
+            if (currentRoom === null) throw new Error('Room with given id does not exist')
             const currentSpreadsheet = await Spreadsheet.findByPk(spreadsheetId);
-            if(currentSpreadsheet===null) throw new Error('Spreadsheet with given id does not exist');        
-            const exerciseList = await Exercise.findAll({where: {spreadsheetId: spreadsheetId}});
-            const spreadsheetList = await Spreadsheet.findAll({where:{roomId: roomId}})
-            
+            if (currentSpreadsheet === null) throw new Error('Spreadsheet with given id does not exist');
+            const exerciseList = await Exercise.findAll({ where: { spreadsheetId: spreadsheetId } });
+            const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } })
+            const timeCreated = currentSpreadsheet.createdAt; 
             res.render('room',
-            {
-                spreadsheetList:spreadsheetList,
-                exerciseList: exerciseList,
-                roomName: currentRoom.name,
-                roomId: roomId,
-                spreadsheetId: spreadsheetId,
-                spreadsheetName: currentSpreadsheet.name,
-                url: `http://localhost:${PORT}/room/${currentRoom.id}`
+                {
+                    createdAt: timeCreated,
+                    spreadsheetList: spreadsheetList,
+                    exerciseList: exerciseList,
+                    roomName: currentRoom.name,
+                    roomId: roomId,
+                    spreadsheetId: spreadsheetId,
+                    spreadsheetName: currentSpreadsheet.name,
+                    url: `http://localhost:${PORT}/room/${currentRoom.id}`
 
-            });
-        }catch(e) {
+                });
+        } catch (e) {
             console.error(e.message);
             res.render('error');
         }
     }
 
-    public static assign(req: Request, res: Response) {
+    public static async assign(req: Request, res: Response) {
+        try {
+            const { roomId, spreadsheetId, exerciseId } = req.params;
+            const currentRoom = await Room.findByPk(roomId);
+            if (currentRoom === null) throw new Error('Room with given id does not exist')
+            const currentSpreadsheet = await Spreadsheet.findByPk(spreadsheetId);
+            if (currentSpreadsheet === null) throw new Error('Spreadsheet with given id does not exist');
+            const currentExercise = await Exercise.findByPk(exerciseId);
+            if (currentExercise === null) throw new Error('Exercise with given id does not exist');
+            try {
+               // currentExercise.assign(firstName, lastName);
+            } catch (e) {
 
+            }
+        } catch (e) {
+            console.log(e);
+            res.render('error');
+        }
     }
 
     public getRouter(): Router {
