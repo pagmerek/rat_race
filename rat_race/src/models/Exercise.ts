@@ -1,4 +1,4 @@
-import { Model, DataTypes, Optional } from "sequelize";
+import { Model, DataTypes, Optional, Op } from "sequelize";
 import sequelize from "../sequelize";
 import Room from "./Room";
 import Spreadsheet from "./Spreadsheet";
@@ -26,10 +26,61 @@ class Exercise extends Model<ExerciseAttributes>
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 
-     public assign(firstName: string, lastName: string): void {
-        
-    }
+    public async assign(firstName: string, lastName: string): Promise<void> {
+        if (this.assignedUserFirstName === null && this.assignedUserLastName === null) {
+            this.assignedUserFirstName = firstName;
+            this.assignedUserLastName = lastName;
+        }
+        else {
+            const currentSpreadsheet = await Spreadsheet.findByPk(this.spreadsheetId);
+            if (currentSpreadsheet === null) throw new Error("Target exercise has no spreadsheet");
+            const assignedUserPoints = await Exercise.count({
+                include: {
+                    model: Spreadsheet,
+                    as: 'Spreadsheets',
+                    where: {
+                        'roomId': {
+                            [Op.eq]: currentSpreadsheet.roomId
+                        }
+                    }
+                },
+                where: {
+                    'assignedUserFirstName': {
+                        [Op.eq]: this.assignedUserFirstName
+                    },
+                    'assignedUserLastName': {
+                        [Op.eq]: this.assignedUserLastName
+                    }
+                }
+            });
+            const requestedUserPoints = await Exercise.count({
+                include: {
+                    model: Spreadsheet,
+                    as: 'Spreadsheets',
+                    where: {
+                        'roomId': {
+                            [Op.eq]: currentSpreadsheet.roomId
+                        }
+                    }
+                },
+                where: {
+                    'assignedUserFirstName': {
+                        [Op.eq]: firstName
+                    },
+                    'assignedUserLastName': {
+                        [Op.eq]: lastName
+                    }
+                }
+            });
+            console.log(requestedUserPoints);
+            console.log(assignedUserPoints);
+            if (requestedUserPoints > assignedUserPoints) {
+                this.assignedUserFirstName = firstName;
+                this.assignedUserLastName = lastName;
 
+            } else throw new Error('Can\'t reassign an exercise to a user with greater amount of points');
+        }
+    }
 }
 
 Exercise.init({
@@ -39,7 +90,7 @@ Exercise.init({
         primaryKey: true,
     },
     label: {
-        type: new DataTypes.STRING(3),
+        type: new DataTypes.STRING(16),
         allowNull: false,
     },
     assignedUserFirstName: {
@@ -60,5 +111,6 @@ Exercise.init({
         tableName: "exercises",
     }
 );
+
 
 export default Exercise;

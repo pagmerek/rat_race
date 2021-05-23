@@ -63,6 +63,7 @@ export class ExerciseController implements Controller {
     public static async assign(req: Request, res: Response) {
         try {
             const { roomId, spreadsheetId, exerciseId } = req.params;
+            console.log(req.body);
             const currentRoom = await Room.findByPk(roomId);
             if (currentRoom === null) throw new Error('Room with given id does not exist')
             const currentSpreadsheet = await Spreadsheet.findByPk(spreadsheetId);
@@ -70,10 +71,11 @@ export class ExerciseController implements Controller {
             const currentExercise = await Exercise.findByPk(exerciseId);
             if (currentExercise === null) throw new Error('Exercise with given id does not exist');
             try {
-               // currentExercise.assign(firstName, lastName);
+              currentExercise.assign(req.body.exerciseForm[0], req.body.exerciseForm[1]);
             } catch (e) {
-
+                //failed message
             }
+            res.redirect(`/room/${roomId}/spreadsheet/${spreadsheetId}`)
         } catch (e) {
             console.log(e);
             res.render('error');
