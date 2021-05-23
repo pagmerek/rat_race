@@ -1,10 +1,9 @@
 extends ./app.jade
 block sidebar
-  .d-flex.flex-column.p-3(style='width: 280px;')
-    a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href='/')
-    h1 &#128000 Rat race
+  a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(style ='position: absolute; width: 100%; height: 70%; display: flex;justify-content: center; align-items: center;')
+      h1(style='font-size: 100px') &#128000 Rat race
 block content
-  .p-5.rounded-lg.m-3
+  .p-5.rounded-lg.m-3(style ='display: flex;position: absolute; width: 100%; height: 100%;justify-content: center; align-items: center;')
     .row.g3.justify-content-center.gap-3.mt-3(style='text-align:center')
         div(class='row')
           h3 Room #{name} created!      

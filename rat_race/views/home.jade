@@ -1,17 +1,15 @@
 extends ./app.jade
 block sidebar
-  .d-flex.flex-column.p-3(style='width: 280px; height: 100vh')
-    a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href='/')
-    h1 &#128000 Rat race
+    a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(style ='position: absolute; width: 100%; height: 70%; display: flex;justify-content: center; align-items: center;')
+      h1(style='font-size: 100px') &#128000 Rat race
 block content
-  .d-flex.flex-column.p-3(style='margin-right:auto; margin-left: auto;')
-      h1(style='text-align: center;') Your marks are in your hands! 
+    div(style ='display: flex;position: absolute; width: 100%; height: 100%;justify-content: center; align-items: center;')
       form(action='/room', method='post', class='row g3 justify-content-center gap-3 mt-3')
         div(class="col-auto ")
           div(data-role='fieldcontain')
             fieldset(data-role='controlgroup')
               label(for='Room name')
-                input(id='Room name',type='text',value='',name='name', class="form-control")
+                input(id='Room name',type='text',value='',placeholder='Nazwa pokoju',name='name', class="form-control")
         div(class="col-auto")
           div(data-role='fieldcontain')   
-            input(type='submit',value='Create room', class='btn btn-primary mb-3')
+            input(type='submit',value='Stwórz pokój!', class='btn btn-primary mb-3')
