@@ -1,7 +1,5 @@
-import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../sequelize";
-import Exercise from "./Exercise";
-
+import { DataTypes, Model, Optional, BelongsToGetAssociationMixin } from "sequelize";
+import Room from './Room'
 interface SpreadsheetAttributes {
     id?: number;
     roomId: number;
@@ -10,41 +8,17 @@ interface SpreadsheetAttributes {
 
 interface SpreadsheetCreationAttributes extends Optional<SpreadsheetAttributes, "id"> { }
 
-export default class Spreadsheet extends Model<SpreadsheetAttributes>
+class Spreadsheet extends Model<SpreadsheetAttributes, SpreadsheetCreationAttributes>
     implements SpreadsheetAttributes {
     public id?: number;
     public roomId!: number;
     public name!: string;
+
+    public getRoom!: BelongsToGetAssociationMixin<Room>;
 
     public readonly createdAt?: Date;
     public readonly updatedAt?: Date;
 }
 
 
-Spreadsheet.init(
-    {
-        id: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        roomId: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            allowNull: false,
-        },
-        name: {
-            type: new DataTypes.STRING(128),
-            allowNull: false,
-        }
-    },
-    {
-        sequelize,
-        tableName: "spreadsheets",
-    }
-);
-
-Spreadsheet.hasMany(Exercise, {
-    sourceKey: "id",
-    foreignKey: "spreadsheetId",
-    as: "excercises",
-});
+export default Spreadsheet;
