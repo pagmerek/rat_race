@@ -77,7 +77,7 @@ export const modelInit = (sequelize: Sequelize) => {
         }
     );
     
-    Spreadsheet.belongsTo(Room, { foreignKey: 'spreadsheetId' });
+    Spreadsheet.belongsTo(Room, { foreignKey: 'roomId' });
     
     Room.hasMany(Spreadsheet, { foreignKey: 'spreadsheetId', as: 'spreadsheets' });
     

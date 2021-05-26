@@ -1,5 +1,6 @@
 import { Model, DataTypes, Optional, Op, HasManyCreateAssociationMixin, BelongsToGetAssociationMixin } from "sequelize";
 import Spreadsheet from "./Spreadsheet";
+import User from "./User";
 
 export class AssignError extends Error {
     constructor(args: string){
@@ -38,44 +39,10 @@ class Exercise extends Model<ExerciseAttributes, ExerciseCreationAttributes>
         }
 
         const currentSpreadsheet = await this.getSpreadsheet();
-        const assignedUserPoints = await Exercise.count({
-            include: {
-                model: Spreadsheet,
-                as: 'Spreadsheet',
-                where: {
-                    'roomId': {
-                        [Op.eq]: currentSpreadsheet.roomId
-                    }
-                }
-            },
-            where: {
-                'assignedUserFirstName': {
-                    [Op.eq]: this.assignedUserFirstName
-                },
-                'assignedUserLastName': {
-                    [Op.eq]: this.assignedUserLastName
-                }
-            }
-        });
-        const requestedUserPoints = await Exercise.count({
-            include: {
-                model: Spreadsheet,
-                as: 'Spreadsheet',
-                where: {
-                    'roomId': {
-                        [Op.eq]: currentSpreadsheet.roomId
-                    }
-                }
-            },
-            where: {
-                'assignedUserFirstName': {
-                    [Op.eq]: firstName
-                },
-                'assignedUserLastName': {
-                    [Op.eq]: lastName
-                }
-            }
-        });
+        const assignedUserPoints = await User.getPoints(currentSpreadsheet.roomId, this.assignedUserFirstName, this.assignedUserLastName);
+        const requestedUserPoints = await User.getPoints(currentSpreadsheet.roomId, firstName, lastName);
+        console.log(assignedUserPoints);
+        console.log(requestedUserPoints);
         if (requestedUserPoints + 1 < assignedUserPoints) {
             this.assignedUserFirstName = firstName;
             this.assignedUserLastName = lastName;
