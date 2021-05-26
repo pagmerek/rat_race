@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { Controller } from '../interfaces/Controller';
-import Exercise from '../models/Exercise';
+import Exercise, { AssignError } from '../models/Exercise';
 import Room from '../models/Room';
 import Spreadsheet from '../models/Spreadsheet';
 import { PORT } from '..';
@@ -16,10 +16,6 @@ export class ExerciseController implements Controller {
     public static async create(req: Request, res: Response): Promise<void> {
         try {
             const { roomId, spreadsheetId } = req.params;
-            const currentRoom = await Room.findByPk(roomId);
-            if (currentRoom === null) throw new Error('Room with given id does not exist')
-            const currentSpreadsheet = await Spreadsheet.findByPk(spreadsheetId);
-            if (currentSpreadsheet === null) throw new Error('Spreadsheet with given id does not exist');
             await Exercise.create({ label: req.body.label, spreadsheetId: parseInt(spreadsheetId) });
             res.redirect(`/room/${roomId}/spreadsheet/${spreadsheetId}`);
         } catch (e) {
@@ -27,20 +23,13 @@ export class ExerciseController implements Controller {
             res.render('error');
         }
     }
-
-    public static get(req: Request, res: Response) {
-
-    }
-
     public static async list(req: Request, res: Response): Promise<void> {
         try {
             const success = req.query.success;
             const { roomId, spreadsheetId } = req.params;
-            const currentRoom = await Room.findByPk(roomId);
-            if (currentRoom === null) throw new Error('Room with given id does not exist')
-            const currentSpreadsheet = await Spreadsheet.findByPk(spreadsheetId);
-            if (currentSpreadsheet === null) throw new Error('Spreadsheet with given id does not exist');
             const exerciseList = await Exercise.findAll({ where: { spreadsheetId: spreadsheetId }, order: [['id', 'ASC']]});
+            const currentSpreadsheet = await exerciseList[0].getSpreadsheet();
+            const currentRoom =  await currentSpreadsheet.getRoom();
             const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } })
             const timeCreated = currentSpreadsheet.createdAt; 
             res.render('room',
@@ -63,25 +52,21 @@ export class ExerciseController implements Controller {
     }
 
     public static async assign(req: Request, res: Response) {
+        const { roomId, spreadsheetId, exerciseId } = req.params;
+        let success = true;
         try {
-            let success = true;
-            const { roomId, spreadsheetId, exerciseId } = req.params;
-            console.log(req.body);
-            const currentRoom = await Room.findByPk(roomId);
-            if (currentRoom === null) throw new Error('Room with given id does not exist')
-            const currentSpreadsheet = await Spreadsheet.findByPk(spreadsheetId);
-            if (currentSpreadsheet === null) throw new Error('Spreadsheet with given id does not exist');
             const currentExercise = await Exercise.findByPk(exerciseId);
             if (currentExercise === null) throw new Error('Exercise with given id does not exist');
-            try {
-                (await currentExercise.assign(req.body.exerciseForm[0], req.body.exerciseForm[1])).save();
-            } catch (e) {
-                success=false;
-            }
+            (await currentExercise.assign(req.body.exerciseForm[0], req.body.exerciseForm[1])).save();
             res.redirect(`/room/${roomId}/spreadsheet/${spreadsheetId}/?success=${success}`)
         } catch (e) {
-            console.log(e);
-            res.render('error');
+            if(e instanceof AssignError){
+                success=false;
+                res.redirect(`/room/${roomId}/spreadsheet/${spreadsheetId}/?success=${success}`)
+            }else{
+                console.log(e);
+                res.render('error');
+            }
         }
     }
 

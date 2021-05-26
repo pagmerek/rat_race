@@ -1,6 +1,13 @@
 import { Model, DataTypes, Optional, Op, HasManyCreateAssociationMixin, BelongsToGetAssociationMixin } from "sequelize";
 import Spreadsheet from "./Spreadsheet";
 
+export class AssignError extends Error {
+    constructor(args: string){
+        super(args);
+        this.name = 'AssignError'
+    }
+}
+
 interface ExerciseAttributes {
     id?: number;
     label: string;
@@ -31,7 +38,6 @@ class Exercise extends Model<ExerciseAttributes, ExerciseCreationAttributes>
         }
 
         const currentSpreadsheet = await this.getSpreadsheet();
-        if (currentSpreadsheet === null) throw new Error("Target exercise has no spreadsheet");
         const assignedUserPoints = await Exercise.count({
             include: {
                 model: Spreadsheet,
@@ -70,14 +76,12 @@ class Exercise extends Model<ExerciseAttributes, ExerciseCreationAttributes>
                 }
             }
         });
-        console.log(requestedUserPoints);
-        console.log(assignedUserPoints);
-        if (requestedUserPoints < assignedUserPoints) {
+        if (requestedUserPoints + 1 < assignedUserPoints) {
             this.assignedUserFirstName = firstName;
             this.assignedUserLastName = lastName;
             return this;
 
-        } else throw new Error('Can\'t reassign an exercise to a user with greater amount of points');
+        } else throw new AssignError('Can\'t reassign an exercise to a user with greater amount of points');
         }
 }
 

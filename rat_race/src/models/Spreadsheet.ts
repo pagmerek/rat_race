@@ -1,5 +1,5 @@
-import { DataTypes, Model, Optional } from "sequelize";
-
+import { DataTypes, Model, Optional, BelongsToGetAssociationMixin } from "sequelize";
+import Room from './Room'
 interface SpreadsheetAttributes {
     id?: number;
     roomId: number;
@@ -13,6 +13,8 @@ class Spreadsheet extends Model<SpreadsheetAttributes, SpreadsheetCreationAttrib
     public id?: number;
     public roomId!: number;
     public name!: string;
+
+    public getRoom!: BelongsToGetAssociationMixin<Room>;
 
     public readonly createdAt?: Date;
     public readonly updatedAt?: Date;

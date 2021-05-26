@@ -14,8 +14,6 @@ export class SpreadsheetController implements Controller {
     public static async create(req: Request, res: Response): Promise<void> {
         try {
             const { roomId } = req.params;
-            const currentRoom = await Room.findByPk(roomId);
-            if (currentRoom === null) throw new Error('Room with given roomId does not exist');
             const newSpreadsheet = await Spreadsheet.create({ roomId: parseInt(roomId), name: req.body.name });
             res.redirect(`/room/${roomId}/spreadsheet/${newSpreadsheet.id}`)
         } catch (e) {
