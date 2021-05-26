@@ -3,10 +3,9 @@ Project made for Software Engineering course at Jagiellonian University
 
 
 ----
-NOT IMPLEMENTED !!! USE dev version
 How to start:
 ```
-    docker-compose up -d --build
+    docker-compose up -d
 ```
 then visit `localhost:5000`
 -----

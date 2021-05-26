@@ -17,16 +17,16 @@ services:
       timeout: 5s
       retries: 5
 
-  # rat_race:
-  #   build: ./app
-  #   ports:
-  #     - 5000:5000
-  #   environment: 
-  #     - DEV=false
-  #   depends_on:
-  #     - db
-  #   restart: on-failure
-  #   links:
-  #     - db
+  rat_race:
+    build: ./rat_race
+    ports:
+      - 5000:5000
+    environment: 
+      - DEV=false
+    depends_on:
+      - db
+    restart: on-failure
+    links:
+      - db
 volumes:
   db-data:
