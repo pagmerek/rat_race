@@ -4,13 +4,13 @@ block sidebar
         a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href='/')
         h1.text-white  &#128000 Rat race
         hr.text-white 
-        h6.text-white(style='margin-left: auto; margin-right: auto;') #{roomName}
+        h6.text-white(style='margin-left: auto; margin-right: auto;') #{room.name}
         hr.text-white
         .overflow-auto
           ul.nav.nav-pills.flex-column.mb-auto
               each spreadsheet in spreadsheetList
-                li(class="#{spreadsheetId == spreadsheet.id ? 'nav-item' : ''}")
-                  a(class = "nav-link #{spreadsheetId == spreadsheet.id ? 'active' : 'link-dark'}" href='/room/#{roomId}/spreadsheet/#{spreadsheet.id}' aria-current='page').text-white
+                li(class="#{currentSpreadsheet.id  == spreadsheet.id ? 'nav-item' : ''}")
+                  a(class = "nav-link #{currentSpreadsheet.id  == spreadsheet.id ? 'active' : 'link-dark'}" href='/room/#{room.roomId}/spreadsheet/#{spreadsheet.id}' aria-current='page').text-white
                     svg.bi.me-2(width='16' height='16')
                       use(xlink:href='#home')
                     |           #{spreadsheet.name}
@@ -26,9 +26,9 @@ block sidebar
                 
 
 block content 
-      if spreadsheetId 
+      if currentSpreadsheet.id 
         .d-flex.flex-column.p-5.bg-light(style='height: 100vh')
-          h1 #{spreadsheetName} <p style='float: right' id="timer"></p> 
+          h1 #{currentSpreadsheet.name} <p style='float: right' id="timer"></p> 
           hr
           if success == "true" 
                 .alert.alert-success(role="alert")
@@ -40,7 +40,7 @@ block content
             | Aby zapisać się do zadania wpisz swoje imię i nazwisko obok jego numeru i kliknij: Zapisz się!
           p.lead(style='text-align: center')
             | Możesz również nadpisać czyjeś zadanie jeżeli masz mniej zadań w tym pokoju
-          form(action='#{url}/spreadsheet/#{spreadsheetId}/exercise/create', method='post', class='row g3 justify-content-center gap-3 mt-3')
+          form(action='#{url}/spreadsheet/#{currentSpreadsheet.id }/exercise/create', method='post', class='row g3 justify-content-center gap-3 mt-3')
             div(class="col-auto ")
               div(data-role='fieldcontain')
                 fieldset(data-role='controlgroup')
@@ -51,7 +51,7 @@ block content
                 input(type='submit',value='Dodaj zadanie', class='btn btn-primary mb-3')
           div(style='margin-right: auto; margin-left: auto; min-width: 1000px;overflow-y: auto; overflow-x: hidden')
             each exercise in exerciseList 
-                  form(action='#{url}/spreadsheet/#{spreadsheetId}/exercise/#{exercise.id}' method='post', style='bottom:0; margin-left: auto; margin-right: auto').form-row      
+                  form(action='#{url}/spreadsheet/#{currentSpreadsheet.id }/exercise/#{exercise.id}' method='post', style='bottom:0; margin-left: auto; margin-right: auto').form-row      
                     .row(style='margin-top:2%') 
                       .col 
                         |  #{exercise.label}
@@ -71,7 +71,7 @@ block content
                             | Zapisz się!
   
           script.
-            let countDownDate = new Date('#{createdAt}');
+            let countDownDate = new Date('#{currentSpreadsheet.createdAt}');
             countDownDate.setDate(countDownDate.getDate()+1);
             let x = setInterval( () => {
               let now = new Date().getTime();

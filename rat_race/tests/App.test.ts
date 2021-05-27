@@ -1,31 +1,45 @@
-import { Sequelize } from 'sequelize';
-import express from 'express';
+import express, { Express } from 'express';
+import { Sequelize } from 'sequelize/types';
 import { mocked } from 'ts-jest/utils';
 import { App } from '../src/App';
+import sequelize from '../src/database';
 import { ControllerStub } from './stubs/ControllerStub';
 
 
-jest.mock('sequelize')
-jest.mock('express')
+jest.mock('express');
+jest.mock('sequelize');
+jest.mock('../src/database');
 
 describe('App', () => {
+    const sampleSequelize = { sync: jest.fn() } as unknown as Sequelize;
+    const mockedSequelize = mocked(sampleSequelize, true);
 
-    test('creates Sequelize instance xD', () => {
+    const mockedExpressConstructor = mocked(express, true);
+    const sampleExpress = { set: jest.fn(), use: jest.fn() } as unknown as Express;
+    const mockedExpressInstance = mocked(sampleExpress, true);
 
-        const mockedSequelizeConstructor = mocked(Sequelize, true);
-        new App('database_urlxD', 5555);
-        expect(mockedSequelizeConstructor).toHaveBeenCalledWith('database_urlxD');
-    });
+    beforeEach(() => {
+        jest.resetAllMocks();
+        jest.clearAllMocks();
+    })
 
-    test('creates express instance xD', () => {
-        const mockedExpressConstructor = mocked(express, true);
-        new App('database_urlxD', 5555);
+    test('creates express instance', () => {
+        mockedExpressConstructor.mockReturnValue(mockedExpressInstance);
+        new App(sampleSequelize, 5555);
         expect(mockedExpressConstructor).toHaveBeenCalled();
     });
 
-    test('adds controller xD', () => {
-        const app = new App('database_urlxD', 5555);
+    test('syncs database', () => {
+        mockedExpressConstructor.mockReturnValue(mockedExpressInstance);
+        new App(sampleSequelize, 5555);
+        expect(mockedSequelize.sync).toHaveBeenCalled();
+    });
+
+    test('adds controller', () => {
+        mockedExpressConstructor.mockReturnValue(mockedExpressInstance);
+        const app = new App(mockedSequelize, 5555);
         const controller = new ControllerStub();
-        expect(app.addController(controller)).not.toThrowError();
+        app.addController(controller)
+        expect(mockedExpressInstance.use).toHaveBeenCalled();
     })
 });
