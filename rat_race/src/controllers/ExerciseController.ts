@@ -27,10 +27,11 @@ export class ExerciseController implements Controller {
         try {
             const success = req.query.success;
             const { roomId, spreadsheetId } = req.params;
-            const exerciseList = await Exercise.findAll({ where: { spreadsheetId: spreadsheetId }, order: [['id', 'ASC']]});
-            const currentSpreadsheet = await exerciseList[0].getSpreadsheet();
+            const currentSpreadsheet = await Spreadsheet.findByPk(spreadsheetId)
+            if(currentSpreadsheet===null) throw new Error('Spreadsheet with given id does not exist')
             const currentRoom =  await currentSpreadsheet.getRoom();
-            const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } })
+            const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
+            const exerciseList = await Exercise.findAll({ where: { spreadsheetId: spreadsheetId }, order: [['id', 'ASC']]});
             const timeCreated = currentSpreadsheet.createdAt; 
             res.render('room',
                 {   
