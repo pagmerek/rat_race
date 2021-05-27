@@ -1,7 +1,10 @@
 import {
+  BelongsToGetAssociationMixin,
+  HasManyGetAssociationsMixin,
     Model,
     Optional,
   } from "sequelize";
+import Spreadsheet from "./Spreadsheet";
 
 
 interface RoomAttributes {
@@ -9,7 +12,7 @@ interface RoomAttributes {
   name: string;
 }
 
-interface RoomCreationAttributes extends Optional<RoomAttributes, "id"> {}
+interface RoomCreationAttributes extends Optional<RoomAttributes, "id"> {};
 
 class Room extends Model<RoomAttributes, RoomCreationAttributes>
   implements RoomAttributes {
@@ -18,6 +21,8 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes>
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  public getSpreadsheets!: HasManyGetAssociationsMixin<Spreadsheet>;
 }
 
 export default Room;
