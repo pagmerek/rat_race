@@ -1,8 +1,8 @@
 import { Router, Response, Request } from 'express';
 import { Controller } from '../interfaces/Controller'
 import Spreadsheet from '../models/Spreadsheet';
-import { PORT } from '..';
 import Room from '../models/Room';
+import { PORT } from '../consts';
 
 export class SpreadsheetController implements Controller {
     private router: Router = Router({mergeParams: true});
