@@ -30,9 +30,7 @@ export default class ExerciseController implements Controller {
             if(currentSpreadsheet === null) throw new Error('Spreadsheet with given id does not exist')
             const currentRoom =  await currentSpreadsheet.getRoom();
             const spreadsheetList = await currentRoom.getSpreadsheets();
-            console.log('11111')
             const exerciseList = await currentSpreadsheet.getExercises();
-            console.log('22222')
             res.render('room',
                 {   
                     success: success,

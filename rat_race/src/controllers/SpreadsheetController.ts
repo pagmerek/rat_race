@@ -23,7 +23,6 @@ export class SpreadsheetController implements Controller {
     }
     public static async list(req: Request, res: Response): Promise<void> {
         try {
-            console.log('xDDDD');
             const { roomId } = req.params;
             const currentRoom = await Room.findByPk(roomId);
             if (currentRoom === null) throw new Error('Room with given roomId does not exist');
