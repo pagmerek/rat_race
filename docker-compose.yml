@@ -9,8 +9,6 @@ services:
       POSTGRES_DB: postgres
     ports:
       - 5432:5432
-    volumes:
-      - db-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -28,5 +26,3 @@ services:
     restart: on-failure
     links:
       - db
-volumes:
-  db-data:

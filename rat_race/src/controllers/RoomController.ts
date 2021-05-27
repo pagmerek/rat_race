@@ -1,8 +1,10 @@
 import { Router, Response, Request } from 'express';
-import { PORT } from '..';
+import { PORT } from '../consts';
 import { Controller } from '../interfaces/Controller'
 import Room from '../models/Room'
-export class RoomController implements Controller{
+
+
+export default class RoomController implements Controller{
     private router: Router = Router();
 
     constructor() {

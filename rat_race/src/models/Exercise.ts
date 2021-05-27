@@ -1,4 +1,4 @@
-import { Model, DataTypes, Optional, Op, HasManyCreateAssociationMixin, BelongsToGetAssociationMixin } from "sequelize";
+import { Model, Optional, Op, BelongsToGetAssociationMixin } from "sequelize";
 import Spreadsheet from "./Spreadsheet";
 import User from "./User";
 

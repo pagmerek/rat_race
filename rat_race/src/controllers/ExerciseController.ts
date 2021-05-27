@@ -1,11 +1,10 @@
 import { Request, Response, Router } from 'express';
 import { Controller } from '../interfaces/Controller';
 import Exercise, { AssignError } from '../models/Exercise';
-import Room from '../models/Room';
 import Spreadsheet from '../models/Spreadsheet';
-import { PORT } from '..';
+import { PORT } from '../consts';
 
-export class ExerciseController implements Controller {
+export default class ExerciseController implements Controller {
     private router: Router = Router({ mergeParams: true })
 
     constructor() {
@@ -28,23 +27,20 @@ export class ExerciseController implements Controller {
             const success = req.query.success;
             const { roomId, spreadsheetId } = req.params;
             const currentSpreadsheet = await Spreadsheet.findByPk(spreadsheetId)
-            if(currentSpreadsheet===null) throw new Error('Spreadsheet with given id does not exist')
+            if(currentSpreadsheet === null) throw new Error('Spreadsheet with given id does not exist')
             const currentRoom =  await currentSpreadsheet.getRoom();
-            const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
-            const exerciseList = await Exercise.findAll({ where: { spreadsheetId: spreadsheetId }, order: [['id', 'ASC']]});
-            const timeCreated = currentSpreadsheet.createdAt; 
+            const spreadsheetList = await currentRoom.getSpreadsheets();
+            console.log('11111')
+            const exerciseList = await currentSpreadsheet.getExercises();
+            console.log('22222')
             res.render('room',
                 {   
                     success: success,
-                    createdAt: timeCreated,
                     spreadsheetList: spreadsheetList,
                     exerciseList: exerciseList,
-                    roomName: currentRoom.name,
-                    roomId: roomId,
-                    spreadsheetId: spreadsheetId,
-                    spreadsheetName: currentSpreadsheet.name,
+                    room: currentRoom,
+                    currentSpreadsheet: currentSpreadsheet,
                     url: `http://localhost:${PORT}/room/${currentRoom.id}`
-
                 });
         } catch (e) {
             console.error(e.message);
@@ -54,16 +50,14 @@ export class ExerciseController implements Controller {
 
     public static async assign(req: Request, res: Response) {
         const { roomId, spreadsheetId, exerciseId } = req.params;
-        let success = true;
         try {
             const currentExercise = await Exercise.findByPk(exerciseId);
             if (currentExercise === null) throw new Error('Exercise with given id does not exist');
             (await currentExercise.assign(req.body.exerciseForm[0], req.body.exerciseForm[1])).save();
-            res.redirect(`/room/${roomId}/spreadsheet/${spreadsheetId}/?success=${success}`)
+            res.redirect(`/room/${roomId}/spreadsheet/${spreadsheetId}/?success=${true}`)
         } catch (e) {
             if(e instanceof AssignError){
-                success=false;
-                res.redirect(`/room/${roomId}/spreadsheet/${spreadsheetId}/?success=${success}`)
+                res.redirect(`/room/${roomId}/spreadsheet/${spreadsheetId}/?success=${false}`)
             }else{
                 console.log(e);
                 res.render('error');
