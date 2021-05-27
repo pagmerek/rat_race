@@ -40,26 +40,27 @@ describe("SpreadsheetController",() => {
 
     describe('list',() =>{
         const mockRequest = {params: {roomId: 123} } as unknown as Request;
-        const sampleRoom = { name: 'zz', id: 123 } as unknown as Room;
+        const sampleRoom = { name: 'zz', id: 123, getSpreadsheets: jest.fn(), } as unknown as Room;
+        const mockedRoomInstance = mocked(sampleRoom, true)
+
         const sampleSpreadsheets = [{s:1}, {s:2}] as unknown as Spreadsheet[];
 
         test('queries for all spreadsheets', async () => {
             mockedRoom.findByPk.mockResolvedValue(sampleRoom);
-            mockedSpreadsheet.findAll.mockResolvedValue(sampleSpreadsheets);
+            mockedRoomInstance.getSpreadsheets.mockResolvedValue(sampleSpreadsheets);
 
             await SpreadsheetController.list(mockRequest,mockResponse);
-            expect(mockedSpreadsheet.findAll).toHaveBeenCalledWith({where: {roomId: 123}});
+            expect(mockedRoomInstance.getSpreadsheets).toHaveBeenCalled();
         });
 
         test('render spreadsheet template', async () => {
             mockedRoom.findByPk.mockResolvedValue(sampleRoom);
-            mockedSpreadsheet.findAll.mockResolvedValue(sampleSpreadsheets);
+            mockedRoomInstance.getSpreadsheets.mockResolvedValue(sampleSpreadsheets);
 
             await SpreadsheetController.list(mockRequest, mockResponse);
             expect(mockResponse.render).toHaveBeenCalledWith('room', {
                 url: `http://localhost:${PORT}/room/123`,
-                roomId: 123,
-                roomName: 'zz',
+                room: sampleRoom,
                 spreadsheetList: [{s:1}, {s:2}] 
             });
         });

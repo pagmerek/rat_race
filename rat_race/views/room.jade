@@ -10,7 +10,7 @@ block sidebar
           ul.nav.nav-pills.flex-column.mb-auto
               each spreadsheet in spreadsheetList
                 li(class="#{currentSpreadsheet && currentSpreadsheet.id  == spreadsheet.id ? 'nav-item' : ''}")
-                  a(class = "nav-link #{ currentSpreadsheet && currentSpreadsheet.id  == spreadsheet.id ? 'active' : 'link-dark'}" href='/room/#{room.roomId}/spreadsheet/#{spreadsheet.id}' aria-current='page').text-white
+                  a(class = "nav-link #{ currentSpreadsheet && currentSpreadsheet.id  == spreadsheet.id ? 'active' : 'link-dark'}" href='/room/#{room.id}/spreadsheet/#{spreadsheet.id}' aria-current='page').text-white
                     svg.bi.me-2(width='16' height='16')
                       use(xlink:href='#home')
                     |           #{spreadsheet.name}
