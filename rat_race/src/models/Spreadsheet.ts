@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional, BelongsToGetAssociationMixin } from "sequelize";
+import { Model, Optional, BelongsToGetAssociationMixin } from "sequelize";
 import Room from './Room'
 interface SpreadsheetAttributes {
     id?: number;

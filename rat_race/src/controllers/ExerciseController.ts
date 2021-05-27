@@ -1,11 +1,10 @@
 import { Request, Response, Router } from 'express';
 import { Controller } from '../interfaces/Controller';
 import Exercise, { AssignError } from '../models/Exercise';
-import Room from '../models/Room';
 import Spreadsheet from '../models/Spreadsheet';
 import { PORT } from '..';
 
-export class ExerciseController implements Controller {
+export default class ExerciseController implements Controller {
     private router: Router = Router({ mergeParams: true })
 
     constructor() {

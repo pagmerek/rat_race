@@ -1,9 +1,9 @@
 import { App } from "./App";
-import { ExerciseController } from "./controllers/ExerciseController";
+import ExerciseController from "./controllers/ExerciseController";
 import HomeController from "./controllers/HomeController";
-import { RoomController } from "./controllers/RoomController";
+import RoomController from "./controllers/RoomController";
 import { SpreadsheetController } from "./controllers/SpreadsheetController";
-import sequelize from "./sequelize";
+import sequelize from "./database";
 
 export const PORT = 5000 as const;
 const app = new App(sequelize, PORT);

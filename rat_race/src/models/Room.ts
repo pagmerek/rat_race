@@ -11,7 +11,7 @@ interface RoomAttributes {
 
 interface RoomCreationAttributes extends Optional<RoomAttributes, "id"> {}
 
-class Room extends Model<RoomAttributes>
+class Room extends Model<RoomAttributes, RoomCreationAttributes>
   implements RoomAttributes {
   public id!: number;
   public name!: string;
