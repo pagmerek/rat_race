@@ -9,8 +9,8 @@ block sidebar
         .overflow-auto
           ul.nav.nav-pills.flex-column.mb-auto
               each spreadsheet in spreadsheetList
-                li(class="#{currentSpreadsheet.id  == spreadsheet.id ? 'nav-item' : ''}")
-                  a(class = "nav-link #{currentSpreadsheet.id  == spreadsheet.id ? 'active' : 'link-dark'}" href='/room/#{room.roomId}/spreadsheet/#{spreadsheet.id}' aria-current='page').text-white
+                li(class="#{currentSpreadsheet && currentSpreadsheet.id  == spreadsheet.id ? 'nav-item' : ''}")
+                  a(class = "nav-link #{ currentSpreadsheet && currentSpreadsheet.id  == spreadsheet.id ? 'active' : 'link-dark'}" href='/room/#{room.roomId}/spreadsheet/#{spreadsheet.id}' aria-current='page').text-white
                     svg.bi.me-2(width='16' height='16')
                       use(xlink:href='#home')
                     |           #{spreadsheet.name}
@@ -26,7 +26,7 @@ block sidebar
                 
 
 block content 
-      if currentSpreadsheet.id 
+      if currentSpreadsheet && currentSpreadsheet.id 
         .d-flex.flex-column.p-5.bg-light(style='height: 100vh')
           h1 #{currentSpreadsheet.name} <p style='float: right' id="timer"></p> 
           hr

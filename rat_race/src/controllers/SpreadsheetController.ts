@@ -23,15 +23,15 @@ export class SpreadsheetController implements Controller {
     }
     public static async list(req: Request, res: Response): Promise<void> {
         try {
+            console.log('xDDDD');
             const { roomId } = req.params;
             const currentRoom = await Room.findByPk(roomId);
             if (currentRoom === null) throw new Error('Room with given roomId does not exist');
-            const spreadsheetList = await Spreadsheet.findAll({ where: { roomId: roomId } });
+            const spreadsheetList = await currentRoom.getSpreadsheets()
             res.render('room', 
             { 
                 url: `http://localhost:${PORT}/room/${currentRoom.id}`,
-                roomId: roomId,
-                roomName: currentRoom.name,
+                room: currentRoom,
                 spreadsheetList: spreadsheetList
             });
         } catch (e) {

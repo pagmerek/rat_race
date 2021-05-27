@@ -79,10 +79,10 @@ export const modelInit = (sequelize: Sequelize) => {
     
     Spreadsheet.belongsTo(Room, { foreignKey: 'roomId' });
     
-    Room.hasMany(Spreadsheet, { foreignKey: 'spreadsheetId', as: 'spreadsheets' });
+    Room.hasMany(Spreadsheet, { foreignKey: 'roomId', as: 'spreadsheets' });
     
     Exercise.belongsTo(Spreadsheet, { foreignKey: 'spreadsheetId' });
     
-    Spreadsheet.hasMany(Exercise);
+    Spreadsheet.hasMany(Exercise, { foreignKey: 'spreadsheetId', as: 'exercises' });
     
 }

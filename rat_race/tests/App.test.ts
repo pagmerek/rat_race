@@ -2,7 +2,6 @@ import express, { Express } from 'express';
 import { Sequelize } from 'sequelize/types';
 import { mocked } from 'ts-jest/utils';
 import { App } from '../src/App';
-import sequelize from '../src/database';
 import { ControllerStub } from './stubs/ControllerStub';
 
 
