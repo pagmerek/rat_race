@@ -66,14 +66,14 @@ class AssignExercise:
         print('Testing: RRACE-RQ-4')
 
         self.before_each()
-        run_test('Assigns exercise successfully', self.assign_exercise_successfully)
+        run_test('TC10 - Assigns exercise successfully', self.assign_exercise_successfully)
         self.after_each()
 
         self.before_each()
-        run_test('Shows correct assignee data', self.show_correct_assignee_data)
+        run_test('TC11 - Shows correct assignee data', self.show_correct_assignee_data)
         self.after_each()
         
         self.before_each()
-        run_test('Shows success message', self.show_success_message)
+        run_test('TC12 - Shows success message', self.show_success_message)
         self.after_each()
         

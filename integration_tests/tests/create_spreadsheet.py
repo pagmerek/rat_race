@@ -50,13 +50,13 @@ class CreateSpreadsheet:
         print('Testing: RRACE-RQ-2')
 
         self.before_each()
-        run_test('Creates spreadsheet successfully', self.creates_spreadsheet_successfully)
+        run_test('TC04 - Creates spreadsheet successfully', self.creates_spreadsheet_successfully)
         self.after_each()
 
         self.before_each()
-        run_test('Spreadsheet can be opened', self.spreadsheet_can_be_opened)
+        run_test('TC05 - Spreadsheet can be opened', self.spreadsheet_can_be_opened)
         self.after_each()
 
         self.before_each()
-        run_test('Allows to specify spreadsheet name', self.allows_to_specify_spreadsheet_name)
+        run_test('TC06 - Allows to specify spreadsheet name', self.allows_to_specify_spreadsheet_name)
         self.after_each()

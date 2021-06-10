@@ -107,10 +107,10 @@ class PointsCalc:
             exercise_name_form = self.driver.find_element(By.ID, "Exercise label")
             exercise_name_form.send_keys("Example1")
             self.driver.find_element_by_xpath("//input[@value='Dodaj zadanie']").click()
+        time.sleep(2)
 
         for i in range(4):
             self.driver.find_element_by_xpath(f"//a[contains(text(), 'ExampleSpreadsheet{i+3}')]").click()
-            time.sleep(0.3)
             assign_form_name = self.driver.find_elements_by_id("name")[0]
             assign_form_surname = self.driver.find_elements_by_id("surname")[0]
             assign_form_name.send_keys('test')
@@ -119,7 +119,6 @@ class PointsCalc:
         
         for i in range(3):
             self.driver.find_element_by_xpath(f"//a[contains(text(), 'ExampleSpreadsheet{i+3}')]").click()
-            time.sleep(0.3)
             assign_form_name = self.driver.find_elements_by_id("name")[0]
             assign_form_surname = self.driver.find_elements_by_id("surname")[0]
             assign_form_name.send_keys('thief')
@@ -139,14 +138,14 @@ class PointsCalc:
         print('Testing: RRACE-RQ-6')
 
         self.before_each()
-        run_test('Accept reassign between spreadsheets', self.accept_reassign_between_spreadsheets)
+        run_test('TC17 - Accept reassign between spreadsheets', self.accept_reassign_between_spreadsheets)
         self.after_each()
 
         self.before_each()
-        run_test('Decline reassign between spreadsheets', self.decline_reassign_between_spreadsheets)
+        run_test('TC19 - Decline reassign between spreadsheets', self.decline_reassign_between_spreadsheets)
         self.after_each()
         
         self.before_each()
-        run_test('Reassigns for many spreadsheets', self.calculate_points_from_many_spreadsheets)
+        run_test('TC18 - Reassigns for many spreadsheets', self.calculate_points_from_many_spreadsheets)
         self.after_each()
         

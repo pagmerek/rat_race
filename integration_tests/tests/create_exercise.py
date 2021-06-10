@@ -52,14 +52,14 @@ class CreateExercise:
         print('Testing: RRACE-RQ-3')
 
         self.before_each()
-        run_test('Creates exercise successfully', self.creates_exercise_successfully)
+        run_test('TC07 - Creates exercise successfully', self.creates_exercise_successfully)
         self.after_each()
 
         self.before_each()
-        run_test('Lists exercise successfully', self.lists_created_exercise_successfully)
+        run_test('TC08 - Lists exercise successfully', self.lists_created_exercise_successfully)
         self.after_each()
 
         self.before_each()
-        run_test('Exercise is blocked for 24h', self.exercise_blocked_before_timer)
+        run_test('TC09 - Exercise is blocked for 24h', self.exercise_blocked_before_timer)
         self.after_each()
 
