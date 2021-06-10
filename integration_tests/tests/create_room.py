@@ -42,15 +42,15 @@ class CreateRoom:
         print('Testing: RRACE-RQ-1')
 
         self.before_each()
-        run_test('Creates room successfully', self.creates_room_successfully)
+        run_test('TC01 - Creates room successfully', self.creates_room_successfully)
         self.after_each()
 
         self.before_each()
-        run_test('Link gives access to the room', self.link_gives_access_to_room)
+        run_test('TC02 - Link gives access to the room', self.link_gives_access_to_room)
         self.after_each()
 
         self.before_each()
-        run_test('Allows to specify room name', self.allows_to_specify_room_name)
+        run_test('TC03 - Allows to specify room name', self.allows_to_specify_room_name)
         self.after_each()
 
 

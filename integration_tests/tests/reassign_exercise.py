@@ -63,6 +63,7 @@ class ReassignExercise:
       assign_form_name.send_keys('thief')
       assign_form_surname.send_keys('test')
       self.driver.find_elements_by_id("assign_button")[0].click()
+      time.sleep(0.4)
       self.driver.find_element_by_xpath("//p[contains(text(), 'thief  test')]")
 
     def show_success_message(self):
@@ -71,6 +72,7 @@ class ReassignExercise:
       assign_form_name.send_keys('thief')
       assign_form_surname.send_keys('test')
       self.driver.find_elements_by_id("assign_button")[0].click()
+      time.sleep(0.4)
       self.driver.find_element_by_class_name('alert-success')
     def show_warning_message(self):
       assign_form_name = self.driver.find_elements_by_id("name")[0]
@@ -84,6 +86,7 @@ class ReassignExercise:
       assign_form_name.send_keys('test')
       assign_form_surname.send_keys('test')
       self.driver.find_elements_by_id("assign_button")[0].click()
+      time.sleep(0.4)
       self.driver.find_element_by_xpath("//p[contains(text(), 'thief  test')]")
       self.driver.find_element_by_class_name('alert-danger')
 
@@ -91,17 +94,17 @@ class ReassignExercise:
         print('Testing: RRACE-RQ-5')
 
         self.before_each()
-        run_test('Reassigns exercise successfully', self.reassign_exercise_successfully)
+        run_test('TC13 - Reassigns exercise successfully', self.reassign_exercise_successfully)
         self.after_each()
 
         self.before_each()
-        run_test('Shows correct assignee data', self.show_correct_assignee_data)
+        run_test('TC14 - Shows correct assignee data', self.show_correct_assignee_data)
         self.after_each()
         
         self.before_each()
-        run_test('Shows success message', self.show_success_message)
+        run_test('TC15 - Shows success message', self.show_success_message)
         self.after_each()
         
         self.before_each()
-        run_test('Shows warning message', self.show_warning_message)
+        run_test('TC16 - Shows warning message', self.show_warning_message)
         self.after_each()
