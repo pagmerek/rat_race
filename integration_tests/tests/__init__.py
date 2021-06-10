@@ -1,2 +1,6 @@
 from tests.create_room import CreateRoom
 from tests.create_spreadsheet import CreateSpreadsheet
+from tests.create_exercise import CreateExercise
+from tests.assign_exercise import AssignExercise
+from tests.reassign_exercise import ReassignExercise
+from tests.calculate_points import PointsCalc
