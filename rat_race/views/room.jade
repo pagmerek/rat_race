@@ -60,7 +60,7 @@ block content
                           p 
                             | #{exercise.assignedUserFirstName}  #{exercise.assignedUserLastName}
                         else
-                          p.text-success
+                          p.text-success(id ='assigned name')
                             |   Wolne :)                 
                       .col
                           input(id='name', disabled = 'true', type='text',value='',name='exerciseForm',placeholder='Imię',required, class="form-control")
@@ -72,7 +72,7 @@ block content
   
           script.
             let countDownDate = new Date('#{currentSpreadsheet.createdAt}');
-            countDownDate.setDate(countDownDate.getDate()+1);
+            countDownDate.setTime(countDownDate.getTime()+5000);
             let x = setInterval( () => {
               let now = new Date().getTime();
               let distance = countDownDate - now;
